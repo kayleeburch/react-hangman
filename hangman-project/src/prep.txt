@@ -1,0 +1,5 @@
+the word, the tiles, 
+true and false state for each character in word
+
+
+HangSnake
