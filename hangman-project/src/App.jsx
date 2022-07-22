@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import CharInput from './components/CharInput'
 import UsedLetters from './components/UsedLetters'
 import GuessWord from './components/GuessWord'
+import HangSnake from './components/HangSnake'
 import './App.css'
 
 function App() {
@@ -41,36 +42,54 @@ function App() {
     return(words[randomNum])
   }
 
+  let hangSnake = ['H','A','N','G','S','N','A','K','E']
+
 
   const [word, setWord] = useState(randomWord())
   const [guess, setGuess] = useState([])
-  const [snake, setSnake] = useState(['H','A','N','G','S','N','A','K','E'])
+  const [snake, setSnake] = useState(hangSnake)
+  const [count, setCount] = useState(hangSnake.length - 1)
 
-  // const removeChar = () => {
-
-  //   setSnake(snake.pop)
-  // }
-
-  const getInput = () => {
-    console.log(getInput)
-  }
-  const getSnake = () => {
-    let guessArr = [...snake]
-    snake = getArr.pop()
-    setSnake(guessArr)
+  const updateCounter = () => {
+    setCount(prevCount => prevCount - 1)
+    console.log(count)
   }
 
   //gets user input guess and sets arr to 
   const getGuess = (addLetter) => {
     let guessArr = [...guess, addLetter]
     setGuess(guessArr)
+    let letterGuess = document.getElementById('guessInput').value
+    checkGuess(letterGuess)
   }
+
+  const checkGuess = (char) => {
+    if(word.includes(char)){
+      return true
+    } else {
+      updateCounter()
+      removeLastLetter()
+    }
+  }
+
+  const removeLastLetter = () => {
+    let arr = [...hangSnake]
+    let index = count
+    if(index > 0){
+      arr.splice(count)
+      setSnake(arr)
+    } else {
+      setSnake(0)
+    }
+  }
+
 
   return (
     <div className="App">
-      <h1>Welcome To Hangman!</h1>
-      <h2>Please enter a word below:</h2>
-      <CharInput getGuess={getGuess} getInput={getInput}/> 
+      <h1>Welcome To HangSnake</h1>
+      <HangSnake hangSnake={snake}/>
+      <h3>Please enter a letter below:</h3>
+      <CharInput getGuess={getGuess}/> 
       <p>{word}</p>
       {/* input and button */}
       <GuessWord word={word} guess={guess}/>
